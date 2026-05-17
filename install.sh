@@ -84,10 +84,35 @@ elif [ -f "$DOWNLOADS_DLL" ]; then
     fi
     echo ""
 else
-    echo -e "${YELLOW}!! ONE MORE STEP !!${NC}"
-    echo "You still need the iphlpapi.dll file."
-    echo "  1. Download it from: https://tinyurl.com/e633fsau"
-    echo "  2. Put it next to install.sh, or in your Downloads folder"
+    DLL_URL="https://tinyurl.com/e633fsau"
+    echo -e "${YELLOW}iphlpapi.dll not found anywhere yet.${NC}"
+    echo ""
+    echo "I can download it for you from the link in the README:"
+    echo "  $DLL_URL"
+    echo ""
+    read -p "Download it now? [Y/n]: " yn
+    yn=${yn:-Y}
+    if [[ "$yn" =~ ^[Yy]$ ]]; then
+        echo "Downloading to $LOCAL_DLL ..."
+        if curl -fL --progress-bar -o "$LOCAL_DLL" "$DLL_URL"; then
+            DL_SIZE=$(stat -f%z "$LOCAL_DLL" 2>/dev/null || echo 0)
+            if [ "$DL_SIZE" -lt 100000 ]; then
+                echo -e "  ${RED}!!${NC} Downloaded file is suspiciously small (${DL_SIZE} bytes)."
+                echo "  This usually means the link returned an error page instead of the dll."
+                rm -f "$LOCAL_DLL"
+                echo "  Try downloading manually from: $DLL_URL"
+            else
+                echo -e "  ${GREEN}OK${NC} - downloaded (${DL_SIZE} bytes)"
+            fi
+        else
+            echo -e "  ${RED}!!${NC} Download failed."
+            echo "  Try downloading manually from: $DLL_URL"
+            rm -f "$LOCAL_DLL"
+        fi
+    else
+        echo "  OK. Download it yourself from: $DLL_URL"
+        echo "  Then put it next to install.sh, or in your Downloads folder."
+    fi
     echo ""
 fi
 

