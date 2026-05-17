@@ -1,0 +1,6 @@
+# macOS noise
+.DS_Store
+
+# Never commit the patched dll - users download it themselves (see README).
+# Bundling it would create legal/IP issues and stale-copy risk.
+iphlpapi.dll

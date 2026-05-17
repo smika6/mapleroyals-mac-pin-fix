@@ -39,9 +39,7 @@ If that's not you, this won't do anything useful.
 
 1. Open this link in your browser: **https://tinyurl.com/e633fsau**
 2. Download the file. It's called **`iphlpapi.dll`**.
-3. Move that file into your **Documents** folder.
-   - Open Finder → click **Documents** in the sidebar → drag the `iphlpapi.dll` file into it.
-   - The final path should be: `~/Documents/iphlpapi.dll` (where `~` means your home folder)
+3. Leave it in your **Downloads** folder — the installer will find it there. (Or, if you prefer, drag it into the unzipped `mapleroyals-mac-pin-fix-main` folder from Step 1. Either works.)
 
 ### Step 3 — Run the installer
 
@@ -118,9 +116,19 @@ If you want to remove the Quick Action and the Desktop script:
 
 ---
 
+## Where the scripts look for `iphlpapi.dll`
+
+| Script | Search order |
+|--------|-------------|
+| **`install.sh`** | 1) Next to `install.sh` &nbsp; 2) `~/Downloads` (offers to move it) |
+| **`Fix MapleRoyals Pin Login.command`** | 1) Same folder as the script &nbsp; 2) `~/Downloads` (asks to use-or-move) |
+| **Right-click Quick Action** | 1) `~/Downloads` &nbsp; 2) File picker if not found |
+
+You don't need to memorize this — drop the dll wherever (Downloads is easiest), and the scripts will figure it out.
+
 ## What this actually does (for the curious)
 
-It copies `~/Documents/iphlpapi.dll` over the top of:
+It copies your `iphlpapi.dll` over the top of:
 
 ```
 /Applications/CrossOver.app/Contents/SharedSupport/CrossOver/lib/wine/i386-windows/iphlpapi.dll
@@ -140,8 +148,8 @@ Because `/Applications` is owned by root, copying needs your admin password — 
 - Log out of your Mac and log back in. macOS caches the Services menu and sometimes needs a kick.
 - Make sure you're right-clicking a `.app` file (the Quick Action only appears on apps).
 
-**"iphlpapi.dll missing" alert**
-- You skipped Step 2. Download the dll from https://tinyurl.com/e633fsau and put it in `~/Documents/`.
+**"iphlpapi.dll not found" alert**
+- You skipped Step 2. Download the dll from https://tinyurl.com/e633fsau and put it in your Downloads folder (or next to the script you're running).
 
 **"Replacement failed" / "Could not copy"**
 - Check CrossOver is installed at `/Applications/CrossOver.app` (not somewhere weird).

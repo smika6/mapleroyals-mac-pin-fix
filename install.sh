@@ -62,15 +62,32 @@ echo "Refreshing macOS Services menu..."
 echo -e "  ${GREEN}OK${NC}"
 echo ""
 
-# Check for the dll
-if [ ! -f "$HOME/Documents/iphlpapi.dll" ]; then
-    echo -e "${YELLOW}!! ONE MORE STEP !!${NC}"
-    echo "You still need the iphlpapi.dll file in your Documents folder."
-    echo "  1. Download it from: https://tinyurl.com/e633fsau"
-    echo "  2. Move it to: ~/Documents/iphlpapi.dll"
+# Look for the dll: same folder as install.sh first, then ~/Downloads
+LOCAL_DLL="$REPO_DIR/iphlpapi.dll"
+DOWNLOADS_DLL="$HOME/Downloads/iphlpapi.dll"
+
+if [ -f "$LOCAL_DLL" ]; then
+    echo -e "${GREEN}Found iphlpapi.dll next to install.sh${NC} - you're all set!"
+    echo ""
+elif [ -f "$DOWNLOADS_DLL" ]; then
+    echo -e "${YELLOW}Found iphlpapi.dll in ~/Downloads${NC} but not next to install.sh."
+    read -p "Move it next to install.sh? [Y/n]: " yn
+    yn=${yn:-Y}
+    if [[ "$yn" =~ ^[Yy]$ ]]; then
+        if mv "$DOWNLOADS_DLL" "$LOCAL_DLL"; then
+            echo -e "  ${GREEN}OK${NC} - moved to $LOCAL_DLL"
+        else
+            echo -e "  ${YELLOW}!!${NC} Move failed - leaving it in Downloads"
+        fi
+    else
+        echo "  OK, leaving it in Downloads. The fix will still work."
+    fi
     echo ""
 else
-    echo -e "${GREEN}Found iphlpapi.dll in ~/Documents${NC} - you're all set!"
+    echo -e "${YELLOW}!! ONE MORE STEP !!${NC}"
+    echo "You still need the iphlpapi.dll file."
+    echo "  1. Download it from: https://tinyurl.com/e633fsau"
+    echo "  2. Put it next to install.sh, or in your Downloads folder"
     echo ""
 fi
 

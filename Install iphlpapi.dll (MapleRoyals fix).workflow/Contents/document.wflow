@@ -59,12 +59,18 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>SRC="$HOME/Documents/iphlpapi.dll"
-DEST="/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/lib/wine/i386-windows/iphlpapi.dll"
-if [ ! -f "$SRC" ]; then
-    osascript -e 'display alert "iphlpapi.dll missing" message "File not found in ~/Documents. Place the dll there and try again." as critical'
-    exit 1
+					<string>DEST="/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/lib/wine/i386-windows/iphlpapi.dll"
+DOWNLOADS_DLL="$HOME/Downloads/iphlpapi.dll"
+
+if [ -f "$DOWNLOADS_DLL" ]; then
+    SRC="$DOWNLOADS_DLL"
+else
+    SRC=$(osascript -e 'POSIX path of (choose file with prompt "Could not find iphlpapi.dll in your Downloads folder. Please pick it:" default location (path to downloads folder))' 2&gt;/dev/null)
+    if [ -z "$SRC" ]; then
+        exit 0
+    fi
 fi
+
 if osascript -e "do shell script \"cp '$SRC' '$DEST'\" with administrator privileges" 2&gt;/dev/null; then
     osascript -e 'display notification "iphlpapi.dll installed to CrossOver" with title "MapleRoyals Fix"'
 else
